@@ -2,6 +2,7 @@
 The IPL Auction Manager is a comprehensive web application designed to streamline and manage the auction process for the Indian Premier League (IPL). This project leverages modern web technologies to provide a robust platform for organizing player auctions, managing teams, and tracking player details.
 
 Features
+
 Player Management: Add, update, and view player details including ID, name, role, age, nationality, base price, bid price, and team ID.
 
 Team Management: Create and manage teams with password protection, view team details, budgets, and retained players.
