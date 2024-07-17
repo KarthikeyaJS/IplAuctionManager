@@ -15,8 +15,11 @@ Database Integration: Store and retrieve all player and team information from a 
 Responsive Design: A user-friendly interface that adapts to various screen sizes, ensuring a seamless experience across devices.
 
 
+
 Technologies Used
 
 Frontend: HTML, CSS, JavaScript
+
 Backend: Node.js, Express.js
+
 Database: MongoDB
