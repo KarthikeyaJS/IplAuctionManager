@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPL Auction Manager</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        header {
+            background-color: #0044cc; 
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #ff6600; 
+            overflow: hidden;
+        }
+
+        nav a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            background-color: #003399; 
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        section {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            background-color: #0044cc; 
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            color: white;
+            background-color: #0044cc; 
+        }
+
+        button:hover {
+            background-color: #003399; 
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 300px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal input {
+            display: block;
+            margin: 10px auto;
+            padding: 10px;
+            width: 80%;
+            font-size: 16px;
+        }
+
+        .modal button {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>IPL Auction Manager</h1>
+    </header>
+    <nav>
+            <a></a>
+    </nav>
+    <main>
+        <section id="home">
+            <h2>Welcome to the IPL Auction Manager</h2>
+            <p>This platform allows you to manage and track the IPL auction with ease.</p>
+            <div class="button-container">
+                <button id="adminLoginBtn">Admin Login</button>
+                <button id="userLoginBtn">User Login</button>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; IPL Auction Manager. Code by Karthikeya </p>
+    </footer>
+
+    <div id="adminModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <input type="text" id="adminId" placeholder="Enter Admin ID">
+            <input type="password" id="adminPassword" placeholder="Enter Password">
+            <button onclick="validateAdmin()">Login</button>
+        </div>
+    </div>
+
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <input type="text" id="userId" placeholder="Enter Team ID">
+            <input type="password" id="userPassword" placeholder="Enter Password">
+            <button onclick="validateUser()">Login</button>
+        </div>
+    </div>
+
+    <script>
+        var adminModal = document.getElementById("adminModal");
+        var userModal = document.getElementById("userModal");
+
+        var adminBtn = document.getElementById("adminLoginBtn");
+        var userBtn = document.getElementById("userLoginBtn");
+
+        var closeSpans = document.getElementsByClassName("close");
+
+        adminBtn.onclick = function() {
+            adminModal.style.display = "block";
+        }
+        userBtn.onclick = function() {
+            userModal.style.display = "block";
+        }
+
+        for (let span of closeSpans) {
+            span.onclick = function() {
+                this.parentElement.parentElement.style.display = "none";
+            }
+        }
+
+        window.onclick = function(event) {
+            if (event.target == adminModal) {
+                adminModal.style.display = "none";
+            }
+            if (event.target == userModal) {
+                userModal.style.display = "none";
+            }
+        }
+
+        async function validateAdmin() {
+            const adminId = document.getElementById('adminId').value;
+            const adminPassword = document.getElementById('adminPassword').value;
+
+            const validAdminId = 'karthi';
+            const validAdminPassword = 'karthi123';
+
+            if (adminId === validAdminId && adminPassword === validAdminPassword) {
+                window.location.href = 'admin.html';
+            } else {
+                alert('Invalid ID or Password');
+            }
+        }
+
+        async function validateUser() {
+            const userId = document.getElementById('userId').value;
+            const userPassword = document.getElementById('userPassword').value;
+
+            try {
+                const response = await fetch('/api/teams/validate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ userId, userPassword })
+                });
+
+                if (response.ok) {
+                    window.location.href = `t00x.html?teamId=${userId}`;
+                } else {
+                    alert('Invalid ID or Password');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again later.');
+            }
+        }
+    </script>
+</body>
+</html>

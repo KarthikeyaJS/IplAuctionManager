@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Teams</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            background-color: blue;
+            text-align: center;
+            color: white;
+        }
+
+        header {
+            background-color: blue;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+       p{
+        font-size: 16px;
+        font-family: Arial, Helvetica, sans-serif;
+       }
+
+        .row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .card {
+            background-color: #2e2e2e;
+            border: 2px solid #ff6600;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
+            text-align: center;
+            padding: 10px;
+            margin-top: 30px;
+            width: calc(20% - 20px); 
+            margin-bottom: 70px;
+            box-sizing: border-box;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            display: block;
+            padding: 10px;
+        }
+
+        .card-img-top {
+            width: 60%;
+            margin: 10px auto;
+            border-radius: 8px;
+        }
+
+        .tooltip {
+            visibility: hidden;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            white-space: nowrap;
+            z-index: 1;
+        }
+
+        .card:hover .tooltip {
+            visibility: visible;
+        }
+
+        h1 {
+            font-family: "Quicksand", sans-serif;
+            font-size: 3rem;
+            color: white;
+        }
+
+        input[type="text"], button {
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            position: center;
+        }
+
+        button {
+            background-color: #0044cc;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #003399;
+        }
+
+        footer p {
+            font-size: 24px;
+        }
+
+        footer {
+            margin-top: 70px;
+            background-color: blue;
+            color: white;
+            text-align: center;
+        }
+
+        .footer-top {
+            background-color: #ff6600;
+            text-align: center;
+            width: 100%;
+        }
+
+        .footer-top button {
+            background-color: #003399;
+            color: white;
+            border: #ff6600;
+            width: 100px;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin-top: 10px;
+            border-radius: 4px;
+            left: 90%;
+            transform: translateX(600%);
+        }
+
+        .footer-top button:hover {
+            background-color: #002266;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>All Teams</h1>
+    </header>
+    <section class="container">
+        <div class="teams-container" id="teamsContainer">
+        </div>
+    </section>
+    <footer>
+        <div class="footer-top">
+            <button onclick="window.location.href='admin.html'">Home</button>
+        </div>
+        <p>&copy; IPL Auction Manager. Code by Karthikeya</p>
+    </footer>
+
+    <script>
+        async function fetchTeams() {
+            try {
+                const response = await fetch('/api/teams');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const teams = await response.json();
+
+                const teamsContainer = document.getElementById('teamsContainer');
+                teamsContainer.innerHTML = ''; 
+
+                let row;
+                teams.forEach((team, index) => {
+                    if (index % 5 === 0) {
+                        row = document.createElement('div');
+                        row.classList.add('row');
+                        teamsContainer.appendChild(row);
+                    }
+
+                    const teamCard = document.createElement('div');
+                    teamCard.classList.add('card');
+                    teamCard.addEventListener('click', () => {
+                        window.location.href = `t00x.html?teamId=${team._id}`;
+                    });
+
+                    const teamLink = document.createElement('a');
+                    teamLink.href = `t00x.html?teamId=${team._id}`;
+
+                    const teamImage = document.createElement('img');
+                    teamImage.classList.add('card-img-top');
+                    teamImage.src = team.logoUrl;
+                    teamImage.alt = team.name;
+
+                    const teamName = document.createElement('p');
+                    teamName.textContent = team.name;
+
+                    const tooltip = document.createElement('div');
+                    tooltip.classList.add('tooltip');
+                    tooltip.innerHTML = `Budget: $${team.budget}<br>Total Players: ${team.retainedPlayerIds.length}`;
+                    
+                    teamLink.appendChild(teamImage);
+                    teamLink.appendChild(teamName);
+                    teamCard.appendChild(teamLink);
+                    teamCard.appendChild(tooltip);
+                    row.appendChild(teamCard);
+                });
+            } catch (error) {
+                console.error('Error fetching teams:', error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchTeams);
+    </script>
+</body>
+</html>

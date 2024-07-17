@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Players</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: blue;
+    margin: 0;
+}
+h1, h2 {
+    color: whitesmoke;
+}
+.team-container {
+    margin-bottom: 40px;
+    background-color: #f0f0f0; 
+    padding: 20px;
+    border-radius: 8px; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+}
+.team-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #0044cc; 
+}
+.player-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+.player-card {
+    background-color: #2e2e2e; 
+    border: 2px solid #ff6600;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    width: calc(20% - 20px); 
+    text-align: center;
+    color: white;
+        margin-bottom: 20px;
+    cursor: pointer;
+    position: relative; 
+    transition: transform 0.2s;
+}
+.player-card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+footer p {
+    font-size: 24px;
+}
+footer {
+    margin-top: 70px;
+    background-color: blue;
+    color: white;
+    text-align: center;
+}
+.footer-top {
+    background-color: #ff6600;
+    text-align: center;
+    width: 100%;
+}
+.footer-top button {
+    background-color: #003399;
+    color: white;
+    border: #ff6600;
+    width: 100px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    left: 90%;
+    transform: translateX(600%);
+}
+.footer-top button:hover {
+    background-color: #002266;
+}
+    </style>
+</head>
+<body>
+    <h1>All Players</h1>
+    <h2>Sold Players</h2>
+    <div id="teamPlayersContainer" class="team-container"></div>
+
+    <h2>Unsold Players</h2>
+    <div id="noTeamContainer" class="player-container"></div>
+
+    <div class="modal" id="playerModal">
+        <div class="modal-content" id="modalContent">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+        </div>
+    </div>
+    <footer>
+        <div class="footer-top">
+            <button onclick="window.location.href='admin.html'">Home</button>
+        </div>
+        <p>&copy; IPL Auction Manager. Code by Karthikeya </p>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const teamPlayersContainer = document.getElementById('teamPlayersContainer');
+            const noTeamContainer = document.getElementById('noTeamContainer');
+
+            fetch('/api/players/grouped')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    for (const teamId in data) {
+                        if (teamId !== 'no_team') {
+                            const teamContainer = document.createElement('div');
+                            teamContainer.classList.add('team-container');
+
+                            const teamName = document.createElement('div');
+                            teamName.classList.add('team-name');
+                            teamName.textContent = `Team ${teamId} | ${data[teamId].teamName}`;
+                            teamContainer.appendChild(teamName);
+
+                            const playerContainer = document.createElement('div');
+                            playerContainer.classList.add('player-container');
+
+                            data[teamId].players.forEach(player => {
+                                const playerCard = createPlayerCard(player);
+                                playerContainer.appendChild(playerCard);
+                            });
+
+                            teamContainer.appendChild(playerContainer);
+                            teamPlayersContainer.appendChild(teamContainer);
+                        } else {
+                            data[teamId].forEach(player => {
+                                const playerCard = createPlayerCard(player);
+                                noTeamContainer.appendChild(playerCard);
+                            });
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching grouped players:', error);
+                    teamPlayersContainer.innerHTML = '<p>Failed to fetch players. Please try again later.</p>';
+                });
+        });
+
+        function createPlayerCard(player) {
+            const playerCard = document.createElement('div');
+            playerCard.classList.add('player-card');
+
+            const playerImage = document.createElement('img');
+            playerImage.src = player.imageUrl || 'placeholder.png'; 
+            playerImage.alt = 'Player Image';
+
+            const playerId = document.createElement('p');
+            playerId.textContent = `Player ID: ${player.id}`;
+
+            const playerName = document.createElement('p');
+            playerName.textContent = `Player Name: ${player.name}`;
+
+            playerCard.appendChild(playerImage);
+            playerCard.appendChild(playerId);
+            playerCard.appendChild(playerName);
+
+            return playerCard;
+        }
+        let modalOpen = false;
+        async function toggleModal(playerId) {
+            if (!modalOpen) {
+                const modal = document.getElementById('playerModal');
+                modal.style.display = 'flex';
+
+                const modalContent = document.getElementById('modalContent');
+                modalContent.innerHTML = ''; 
+
+                const player = await fetchPlayerDetails(playerId);
+                if (player) {
+                    const playerDetails = document.createElement('div');
+                    playerDetails.classList.add('player-details');
+                    playerDetails.innerHTML = `
+                        <h2>${player.name}</h2>
+                        <p><strong>ID:</strong> ${player.id}</p>
+                        <p><strong>Role:</strong> ${player.role}</p>
+                        <p><strong>Age:</strong> ${player.age}</p>
+                        <p><strong>Nation:</strong> ${player.nation}</p>
+                        <p><strong>Base Price:</strong> ${player.bprice}</p>
+                        <p><strong>Bid Price:</strong> ${player.bidPrice || 'Not set'}</p>
+                    `;
+                    modalContent.appendChild(playerDetails);
+
+                    const closeBtn = document.createElement('span');
+                    closeBtn.classList.add('close-btn');
+                    closeBtn.textContent = 'Close';
+                    closeBtn.onclick = closeModal;
+                    modalContent.appendChild(closeBtn);
+
+                    modalOpen = true;
+                }
+            } else {
+                closeModal();
+            }
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('playerModal');
+            modal.style.display = 'none';
+            modalOpen = false;
+        }
+
+    </script>
+</body>
+</html>

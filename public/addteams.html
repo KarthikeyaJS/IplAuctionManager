@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Team</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            background-color: blue;
+            text-align: center;
+            color: white;
+        }
+
+        h1 {
+            font-family: "Quicksand", sans-serif;
+            font-size: 3rem;
+            color: white;
+            margin-top: 20px;
+        }
+
+        .container {
+            flex: 1;
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            color: black;
+            text-align: center;
+        }
+
+        input[type="text"], input[type="number"], input[type="password"], button {
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #0044cc;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #003399;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #0044cc;
+            font-size: 16px;
+        }
+
+        a:hover {
+            color: #003399;
+        }
+
+        footer {
+            margin-top: 70px;
+            background-color: blue;
+            color: white;
+            text-align: center;
+        }
+
+        .footer-top {
+            background-color: #ff6600;
+            text-align: center;
+            width: 100%;
+        }
+
+        .footer-top button {
+            background-color: #003399;
+            color: white;
+            border: none;
+            width: 100px;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin-top: 10px;
+            border-radius: 4px;
+            transform: translateX(600%);
+        }
+
+        .footer-top button:hover {
+            background-color: #002266;
+        }
+
+        footer p {
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Add Team</h1>
+    <div class="container">
+        <form id="addTeamForm">
+            <input type="text" id="teamId" name="teamId" placeholder="Team ID" required>
+            <input type="text" id="teamName" name="teamName" placeholder="Team Name" required>
+            <input type="number" id="teamBudget" name="teamBudget" placeholder="Team Budget" required>
+            <input type="text" id="teamLogoUrl" name="teamLogoUrl" placeholder="Team Logo URL" required>
+            <input type="number" id="retainedPlayersCount" name="retainedPlayersCount" placeholder="Count of Retained Players" required><br><br>
+
+            <div id="retainedPlayers"></div>
+
+            <input type="password" id="password" name="password" placeholder="Enter Password" required>
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter Password" required><br><br>
+
+            <button type="button" onclick="addRetainedPlayerFields()">Add Retained Players</button><br><br>
+
+            <button type="button" onclick="submitForm()">Submit</button>
+        </form>
+    </div>
+    <div id="message"></div>
+    <footer>
+        <div class="footer-top">
+            <button onclick="window.location.href='admin.html'">Home</button>
+        </div>
+        <p>&copy; IPL Auction Manager. Code by Karthikeya</p>
+    </footer>
+
+    <script>
+        function addRetainedPlayerFields() {
+            const count = document.getElementById('retainedPlayersCount').value;
+            const container = document.getElementById('retainedPlayers');
+            container.innerHTML = ''; 
+    
+            for (let i = 0; i < count; i++) {
+                const label = document.createElement('label');
+                label.textContent = `Player ID ${i + 1}:`;
+                container.appendChild(label);
+    
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.name = `retainedPlayerIds[${i}]`;
+                container.appendChild(input);
+    
+                container.appendChild(document.createElement('br'));
+            }
+        }
+    
+        async function submitForm() {
+            const teamId = document.getElementById('teamId').value;
+            const teamName = document.getElementById('teamName').value;
+            const teamBudget = parseInt(document.getElementById('teamBudget').value);
+            const teamLogoUrl = document.getElementById('teamLogoUrl').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const retainedPlayersCount = parseInt(document.getElementById('retainedPlayersCount').value);
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                return;
+            }
+
+            const retainedPlayerIds = [];
+            for (let i = 0; i < retainedPlayersCount; i++) {
+                const playerId = document.getElementsByName(`retainedPlayerIds[${i}]`)[0].value;
+                retainedPlayerIds.push(playerId);
+            }
+
+            const body = JSON.stringify({
+                _id: teamId,
+                name: teamName,
+                budget: teamBudget,
+                retainedPlayerIds: retainedPlayerIds,
+                password: password,
+                logoUrl: teamLogoUrl
+            });
+
+            try {
+                const response = await fetch('/api/teams', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: body
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    alert(data.message);
+                } else {
+                    throw new Error(data.error || 'Failed to create team');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to create team');
+            }
+        }
+    </script>
+</body>
+</html>

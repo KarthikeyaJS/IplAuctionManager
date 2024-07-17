@@ -1,0 +1,90 @@
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    background-color: blue;
+    text-align: center;
+    color: white;
+}
+
+header {
+    background-color: blue;
+    color: white;
+    padding: 25px;
+    text-align: center;
+}
+
+.container {
+    flex: 1;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: black;
+    text-align: center;
+    margin-top: 5px
+}
+
+h1 {
+    font-family: "Quicksand", sans-serif; 
+    font-size: 3rem; 
+    color: white; 
+}
+
+input[type="text"], button {
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    position: center;
+}
+
+button {
+    background-color: #0044cc;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #003399;
+}
+footer p{
+    font-size: 24px;
+}
+footer {
+    margin-top: 70px;
+    background-color: blue;
+    color: white;
+    text-align: center;
+}
+
+.footer-top {
+    background-color: #ff6600;
+    text-align:center;
+    width:100%
+}
+
+.footer-top button {
+    background-color: #003399;
+    color: white;
+    border:#ff6600;
+    width:100px;
+     padding: 5px 10px; 
+    cursor: pointer; 
+    margin-top: 10px;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    left: 90%;
+    transform: translateX(600%);
+}
+
+.footer-top button:hover {
+    background-color: #002266;
+}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auction Page</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Auction Page</h1>
+    </header>
+    <div class="container">
+        <form id="playerForm">
+            <input type="text" id="playerId" placeholder="Enter Player ID" required>
+            <button type="submit">Submit</button>
+        </form>
+        <p id="message"></p>
+    </div>
+    <footer>
+        <div class="footer-top">
+            <button onclick="window.location.href='admin.html'">Home</button>
+        </div>
+        <p>&copy; IPL Auction Manager. Code by Karthikeya</p>
+    </footer>
+    <script>
+        document.getElementById('playerForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const playerId = document.getElementById('playerId').value.trim();
+            if (playerId !== '') {
+                fetch(`/api/players/${encodeURIComponent(playerId)}`)
+                    .then(response => response.json())
+                    .then(player => {
+                        if (player.teamId) {
+                            document.getElementById('message').textContent = 'This player has already been bought.';
+                        } else {
+                            window.location.href = `player.html?playerId=${encodeURIComponent(playerId)}`;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        document.getElementById('message').textContent = 'Error fetching player information.';
+                    });
+            }
+        });
+    </script>
+</body>
+</html>

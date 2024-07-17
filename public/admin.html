@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPL Auction Manager</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #0044cc; 
+            color: white;
+            padding: 40px;
+            text-align: center;
+            border-right: 100px solid #ff6600;
+            border-left: 100px solid #ff6600;
+        }
+
+        .container {
+            text-align: center;
+            font-family: "Times New Roman", Times, serif;
+            margin: 20px auto;
+            flex: 1;
+        }
+
+        .container p {
+            font-size: 30px;
+            color: white;
+        }
+
+        .items {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 18rem;
+            text-align: center;
+            margin: 20px;
+        }
+
+        .card img {
+            border-radius: 10px;
+        }
+
+        .container input[type="text"] {
+            width: 300px;
+            height: 30px;
+            margin-bottom: 20px;
+        }
+
+        .container input[type="submit"] {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            color: white;
+            background-color: #0044cc;
+        }
+
+        .container input[type="submit"]:hover {
+            background-color: #003399; 
+        }
+
+        footer {
+            background-color: #0044cc; 
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            border-right: 100px solid #ff6600;
+            border-left: 100px solid #ff6600;
+        }
+
+        footer ul.nav {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        footer ul.nav li {
+            float: left;
+        }
+
+        footer ul.nav li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        footer ul.nav li a:hover {
+            background-color: #003399; 
+        }
+
+        footer p {
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>IPL ADMIN PAGE</h1>
+    </header>
+
+    <main class="container">
+        <div class="items">
+            <div class="card">
+                <a href="allplayers.html"><img class="card-img-top" src="images/player.png" alt="All Players"></a>
+                <div class="card-body">
+                    <h5 class="card-title">ALL PLAYERS</h5>
+                </div>
+            </div>
+            <div class="card">
+                <a href="allteams.html"><img class="card-img-top" src="images/team.png" alt="All Teams"></a>
+                <div class="card-body">
+                    <h5 class="card-title">ALL TEAMS</h5>
+                </div>
+            </div>
+            <div class="card">
+                <a href="auction.html"><img class="card-img-top" src="images/auction.png" alt="Enter Auction"></a>
+                <div class="card-body">
+                    <h5 class="card-title">ENTER AUCTION</h5>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <ul class="nav">
+            <li><a href="addplayer.html">ADD PLAYER</a></li>
+            <li><a href="deleteplayer.html">DELETE PLAYER</a></li>
+            <li><a href="addteams.html">ADD TEAM</a></li>
+            <li><a href="deleteteam.html">DELETE TEAM</a></li>
+            <li style="float: right;"><a href="index.html">LOGOUT</a></li>
+        </ul>
+        <p>&copy; IPL Auction Manager. Code by Karthikeya </p>
+    </footer>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>

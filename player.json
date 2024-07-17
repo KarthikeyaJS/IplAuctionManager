@@ -1,0 +1,26 @@
+
+{"id":"P004","name":"Dinesh Karthik","role":"Batsman","age":39,"nation":"India","bprice":50000000,"imageUrl":"images/P004.png"}
+{"id":"P005","name":"Glenn Maxwell","role":"All Rounder","age":35,"nation":"Australian","bprice":120000000,"imageUrl":"images/P005.png"}
+
+{"id":"P009","name":"Shivam DUbe","role":"All Rounder","age":31,"nation":"India","bprice":40000000,"imageUrl":"images/P009.png"}
+{"id":"P010","name":"Rachin Ravindra","role":"All Rounder","age":24,"nation":"New Zealand","bprice":18000000,"imageUrl":"images/P010.png"}
+
+{"id":"P014","name":"Nitish Kumar Reddy","role":"Batsman","age":21,"nation":"India","bprice":2000000,"imageUrl":"images/p014.png"}
+{"id":"P015","name":"Heinrich Klassen","role":"Wicket-Keeper","age":32,"nation":"South African","bprice":52500000,"imageUrl":"images/P015.png"}
+
+{"id":"P019","name":"Ishan Kishan","role":"Wicket-Keeper","age":33,"nation":"india","bprice":32000000,"imageUrl":"images/P019.png"}
+{"id":"P020","name":"Jasprit Bhumrah","role":"Bowler","age":30,"nation":"India","bprice":120000000,"imageUrl":"images/P020.png"}
+{"id":"P021","name":"Devan Conway","role":"Wicket-Keeper","age":33,"nation":"New Zealand","bprice":10000000,"imageUrl":"images/P021.png"}
+{"id":"P022","name":"Ajinkya Rahane ","role":"Batsman","age":36,"nation":"India","bprice":5000000,"imageUrl":"images/P022.png"}
+{"id":"P023","name":"Shaik Rasheed","role":"Batsman","age":19,"nation":"India","bprice":2000000,"imageUrl":"images/P023.png"}
+{"id":"P024","name":"Rajat Patidar","role":"Batsman","age":31,"nation":"India","bprice":2000000,"imageUrl":"images/P024.png"}
+{"id":"P025","name":"Saurav Chuahan","role":"Batsman","age":24,"nation":"India","bprice":2000000,"imageUrl":"images/P025.png"}
+{"id":"P026","name":"Karn Sharma","role":"Bowler","age":36,"nation":"India","bprice":5000000,"imageUrl":"images/P026.png"}
+{"id":"P027","name":"Glenn Plillips","role":"All Rounder","age":27,"nation":"New Zealand","bprice":15000000,"imageUrl":"images/P027.png"}
+{"id":"P028","name":"Rahul Tripathi","role":"Batsman","age":33,"nation":"India","bprice":85000000,"imageUrl":"images/P028.png"}
+{"id":"P029","name":"Mayank Agarwal","role":"Batsman","age":33,"nation":"India","bprice":85000000,"imageUrl":"images/P029.png"}
+{"id":"P030","name":"Harvik Desai","role":"Wicket Keeper","age":24,"nation":"India","bprice":8000000,"imageUrl":"images/P030.png"}
+{"id":"P031","name":"M Tilak Varma","role":"Bowler","age":21,"nation":"India","bprice":17000000,"imageUrl":"images/P031.png"}
+{"id":"P032","name":"Tim David ","role":"Batsman","age":28,"nation":"Australia","bprice":82500000,"imageUrl":"images/P032.png"}
+
+//use this file to import players to mongodb

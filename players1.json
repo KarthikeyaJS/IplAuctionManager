@@ -1,0 +1,13 @@
+{"id":"P001","name":"Virat Kohli","role":"Batsman","age":36,"nation":"India","bprice":15000000000,"imageUrl":"images/P001.png"}
+{"id":"P002","name":"Faf du plessis ","role":"Batsman","age":40,"nation":"South African","bprice":70000000,"imageUrl":"images/P002.png"}
+{"id":"P003","name":"Will Jacks","role":"Batsman","age":25,"nation":"England","bprice":30000000,"imageUrl":"images/P003.png"}
+{"id":"P006","name":"M S Dhoni","role":"Wicket keeper-Batsman ","age":43,"nation":"India","bprice":140000000,"imageUrl":"images/P006.png"}
+{"id":"P007","name":"Ruturaj Gaikwad","role":"Batsman","age":27,"nation":"India","bprice":60000000,"imageUrl":"images/P007.png"}
+{"id":"P008","name":"Matheesha Pathirana","role":"Bowler","age":21,"nation":"Sri Lanka","bprice":10000000,"imageUrl":"images/P008.png"}
+{"id":"P016","name":"Rohit Sharma","role":"Batsman","age":37,"nation":"India","bprice":150000000,"imageUrl":"images/P016.png"}
+{"id":"P017","name":"Hardik Pandya","role":"All Rounder","age":30,"nation":"India","bprice":150000000,"imageUrl":"images/P017.png"}
+{"id":"P018","name":"Suryakumar","role":"Batsman","age":33,"nation":"India","bprice":32000000,"imageUrl":"images/P018.png"}
+{"id":"P011","name":"Abhisek Sharma","role":"All Rounder","age":23,"nation":"India","bprice":65000000,"imageUrl":"images/P011.png"}
+{"id":"P012","name":"Pat Cummins","role":"Bowler","age":31,"nation":"Australian","bprice":18000000,"imageUrl":"images/P012.png"}
+{"id":"P013","name":"Travis Head","role":"Batsman","age":30,"nation":"Australian","bprice":68000000,"imageUrl":"images/P013.png"}
+//use this file to import players to mongodb

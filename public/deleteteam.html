@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Team</title>
+    <link rel="stylesheet" href="css/styles.css">
+
+</head>
+<body>
+    <header>
+        <h1>Delete Team</h1>
+    </header>
+    <div class="container">
+        <form id="delete-team-form">
+           
+            <input type="text" id="teamId" name="teamId" placeholder="Enter Team ID"required>
+            <button type="submit">Delete Team</button>
+        </form>
+        <p id="response-message"></p>
+    </div>
+
+    <footer>
+        <div class="footer-top">
+            <button onclick="window.location.href='admin.html'">Home</button>
+        </div>
+        <p>&copy; IPL Auction Manager. Code by Karthikeya</p>
+    </footer>
+    <script>
+        document.getElementById('delete-team-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const teamId = document.getElementById('teamId').value;
+            const responseMessage = document.getElementById('response-message');
+
+            try {
+                const response = await fetch(`/api/teams/${teamId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    responseMessage.textContent = data.message;
+                    responseMessage.style.color = 'green';
+                } else {
+                    responseMessage.textContent = data.error || 'Failed to delete team';
+                    responseMessage.style.color = 'red';
+                }
+            } catch (error) {
+                responseMessage.textContent = 'An error occurred: ' + error.message;
+                responseMessage.style.color = 'red';
+            }
+        });
+    </script>
+</body>
+</html>

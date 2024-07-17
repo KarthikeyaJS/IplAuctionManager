@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Players</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            color: white;
+        }
+
+        header {
+            background-color: blue;
+            color: white;
+            padding: 25px;
+            text-align: center;
+            display: flex;
+            justify-content:center; 
+            align-items: center; 
+        }
+
+       
+
+        .container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .players-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .player-card {
+            background-color: #2e2e2e;
+            border: 2px solid #ff6600;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: calc(20% - 20px); 
+            box-sizing: border-box;
+            cursor: pointer;
+            position: relative; 
+            transition: transform 0.2s;
+        }
+
+        .player-card:hover {
+            transform: scale(1.1);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: #2e2e2e;
+            color: white;
+            border: 2px solid #ff6600;
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 100%;
+            max-height: 100%;
+            overflow-y: auto;
+            text-align: center;
+            position: relative;
+        }
+#teamBudget{
+    font-size: 25px;
+}
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            color: #fff;
+            font-size: 20px;
+            font-weight:normal;
+        }
+
+        .close-btn:hover {
+            color: #ff6600;
+        }
+
+        .player-details p {
+            margin: 10px 0;
+        }
+
+        .player-img {
+            width: 100%;
+            margin: 10px auto;
+            border-radius: 8px;
+        }
+
+        .team-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .team-name {
+            font-size: 40px;
+            font-weight: bold;
+            margin-right: 80px;
+            margin-left: 80px;
+        }
+
+        .team-logo {
+            margin-left: 50px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        footer p {
+            font-size: 24px;
+        }
+
+        footer {
+            margin-top: 70px;
+            background-color: blue;
+            color: white;
+            text-align: center;
+        }
+
+        .footer-top {
+            background-color: #ff6600;
+            text-align: center;
+            width: 100%;
+        }
+
+        .footer-top button {
+            background-color: #003399;
+            color: white;
+            margin-bottom: 10px;
+            border: #ff6600;
+            width: 100px;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin-top: 10px;
+            border-radius: 4px;
+            left: 90%;
+            transform: translateX(600%);
+        }
+
+        .footer-top button:hover {
+            background-color: #002266;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="team-info">
+            <img class="team-logo" id="teamLogo" src="" alt="Team Logo">
+            <h1 class="team-name" id="teamName">Team Players</h1>
+        </div>
+        <div id="teamBudget"></div> 
+    </header>
+    <section class="container">
+        <div class="players-container" id="playersContainer">
+        </div>
+    </section>
+    <footer>
+        <div class="footer-top">
+            <button onclick="window.location.href='admin.html'">Home</button>
+        </div>
+        <p>&copy; IPL Auction Manager. Code by Karthikeya</p>
+    </footer>
+
+    <div class="modal" id="playerModal">
+        <div class="modal-content" id="modalContent">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+        </div>
+    </div>
+
+    <script>
+        async function fetchTeamDetails(teamId) {
+            try {
+                const response = await fetch(`/api/teams/${teamId}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const team = await response.json();
+                return team;
+            } catch (error) {
+                console.error('Error fetching team details:', error);
+                return null;
+            }
+        }
+
+        async function fetchPlayers() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const teamId = urlParams.get('teamId');
+
+            try {
+                const team = await fetchTeamDetails(teamId);
+                if (team) {
+                    document.getElementById('teamName').textContent = team.name;
+                    document.getElementById('teamLogo').src = team.logoUrl;
+                }
+
+                const response = await fetch(`/api/teams/${teamId}/players`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const players = await response.json();
+
+                const playersContainer = document.getElementById('playersContainer');
+                playersContainer.innerHTML = ''; 
+
+                players.forEach(player => {
+                    const playerCard = document.createElement('div');
+                    playerCard.classList.add('player-card');
+                    playerCard.setAttribute('data-player-id', player.id);
+                    playerCard.setAttribute('onclick', `toggleModal('${player.id}')`);
+
+                    const playerImg = document.createElement('img');
+                    playerImg.classList.add('player-img');
+                    playerImg.src = player.imageUrl;
+                    playerImg.alt = player.name;
+                    playerCard.appendChild(playerImg);
+
+                    const playerName = document.createElement('p');
+                    playerName.textContent = player.name;
+                    playerName.style.cursor = 'pointer';
+                    playerCard.appendChild(playerName);
+
+                    playersContainer.appendChild(playerCard);
+                });
+
+                const teamResponse = await fetch(`/api/teams/${teamId}`);
+                if (!teamResponse.ok) {
+                    throw new Error(`HTTP error! status: ${teamResponse.status}`);
+                }
+                const teamData = await teamResponse.json();
+                const teamBudgetElement = document.getElementById('teamBudget');
+                teamBudgetElement.textContent = `Budget: $${teamData.budget}`;
+            } catch (error) {
+                console.error('Error fetching players:', error);
+            }
+        }
+
+        async function fetchPlayerDetails(playerId) {
+            try {
+                const response = await fetch(`/api/players/${playerId}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const player = await response.json();
+                return player;
+            } catch (error) {
+                console.error('Error fetching player details:', error);
+                return null;
+            }
+        }
+
+        let modalOpen = false;
+        async function toggleModal(playerId) {
+            if (!modalOpen) {
+                const modal = document.getElementById('playerModal');
+                modal.style.display = 'flex';
+
+                const modalContent = document.getElementById('modalContent');
+                modalContent.innerHTML = ''; 
+
+                const player = await fetchPlayerDetails(playerId);
+                if (player) {
+                    const playerDetails = document.createElement('div');
+                    playerDetails.classList.add('player-details');
+                    playerDetails.innerHTML = `
+                        <h2>${player.name}</h2>
+                        <p><strong>ID:</strong> ${player.id}</p>
+                        <p><strong>Role:</strong> ${player.role}</p>
+                        <p><strong>Age:</strong> ${player.age}</p>
+                        <p><strong>Nation:</strong> ${player.nation}</p>
+                        <p><strong>Base Price:</strong> ${player.bprice}</p>
+                        <p><strong>Bid Price:</strong> ${player.bidPrice || 0}</p>
+                    `;
+                    modalContent.appendChild(playerDetails);
+
+                    const closeBtn = document.createElement('span');
+                    closeBtn.classList.add('close-btn');
+                    closeBtn.textContent = 'x';
+                    closeBtn.onclick = closeModal;
+                    modalContent.appendChild(closeBtn);
+
+                    modalOpen = true;
+                }
+            } else {
+                closeModal();
+            }
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('playerModal');
+            modal.style.display = 'none';
+            modalOpen = false;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const teamId = urlParams.get('teamId');
+            fetchPlayers(teamId);
+        });
+    </script>
+</body>
+</html>
